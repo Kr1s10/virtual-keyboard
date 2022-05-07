@@ -13,6 +13,7 @@ module.exports = {
   rules: {
     'linebreak-style': 0,
     'global-require': 0,
+    'import/extensions': ['error', 'ignorePackages'],
     'eslint linebreak-style': [0, 'error', 'windows'],
   },
 };
