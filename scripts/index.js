@@ -1,5 +1,6 @@
 import KeyBoard from './Keyboard.js';
 import Textarea from './Textarea.js';
+import Description from './Description.js';
 import create from './creater.js';
 
 const rowsOrder = [
@@ -11,8 +12,15 @@ const rowsOrder = [
 ];
 
 const lang = 'en';
+const description = new Description();
 const textarea = new Textarea(5, 50);
 const keyboard = new KeyBoard(rowsOrder).init(lang).show();
 const main = create('main', 'main');
-main.append(textarea.wrapper, keyboard.wrapper);
+main.append(
+  description.title,
+  description.hint,
+  textarea.wrapper,
+  keyboard.wrapper,
+  description.description,
+);
 document.body.prepend(main);

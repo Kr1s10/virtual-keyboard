@@ -140,7 +140,7 @@ export default [
     code: 'Backslash',
   },
   {
-    key: 'Delete',
+    key: 'Del',
     shiftKey: null,
     code: 'Delete',
   },
