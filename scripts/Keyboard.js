@@ -47,12 +47,25 @@ export default class Keyboard {
     const { code, type } = e;
     const keyObj = this.keyBtns.find((key) => key.code === code);
     if (!keyObj) return;
+    this.textarea.focus();
 
     if (type.includes('down')) {
       keyObj.wrapper.classList.add('active');
-      this.textarea.focus();
 
-      if (code.includes('Shift')) this.isShift = true;
+      if (code.includes('Caps') && this.isCaps) {
+        this.isCaps = false;
+        this.setUpperCase(false);
+        keyObj.wrapper.classList.remove('active');
+      } else if (code.includes('Caps')) {
+        this.isCaps = true;
+        this.setUpperCase(true);
+      }
+
+      if (code.includes('Shift')) {
+        this.isShift = true;
+        this.setUpperCase(true);
+      }
+
       if (code.includes('Control')) this.isCtrl = true;
       if (code.includes('Alt')) this.isAlt = true;
 
@@ -69,8 +82,13 @@ export default class Keyboard {
         }
       }
     } else {
-      keyObj.wrapper.classList.remove('active');
-      if (code.includes('Shift')) this.isShift = false;
+      if (!code.includes('Caps')) keyObj.wrapper.classList.remove('active');
+
+      if (code.includes('Shift')) {
+        this.isShift = false;
+        this.setUpperCase(false);
+      }
+
       if (code.includes('Alt')) this.isAlt = false;
       if (code.includes('Control')) this.isCtrl = false;
     }
@@ -99,6 +117,41 @@ export default class Keyboard {
       btn.letter.innerHTML = keyObj.key;
     });
   };
+
+  setUpperCase(flag) {
+    if (flag) {
+      this.keyBtns.forEach((btn) => {
+        if (this.isCaps && this.isShift) {
+          if (btn.sub.innerHTML) {
+            btn.sub.innerHTML = btn.key;
+            btn.letter.innerHTML = btn.shiftKey;
+          } else {
+            btn.letter.innerHTML = btn.key;
+          }
+        } else if (this.isShift) {
+          if (btn.sub.innerHTML) {
+            btn.sub.innerHTML = btn.key;
+          }
+          if (!btn.isFuncKey) {
+            btn.letter.innerHTML = btn.shiftKey;
+          }
+        } else if (this.isCaps) {
+          if (!btn.sub.innerHTML && !btn.isFuncKey) {
+            btn.letter.innerHTML = btn.shiftKey;
+          }
+        }
+      });
+    } else {
+      this.keyBtns.forEach((btn) => {
+        if (btn.sub.innerHTML) {
+          btn.sub.innerHTML = btn.shiftKey;
+          btn.letter.innerHTML = btn.key;
+        } else if (!btn.sub.innerHTML && !btn.isFuncKey && this.isCaps) {
+          btn.letter.innerHTML = btn.shiftKey;
+        } else btn.letter.innerHTML = btn.key;
+      });
+    }
+  }
 
   print(keyObj, key) {
     let cursorPos = this.textarea.selectionStart;
