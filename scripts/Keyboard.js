@@ -58,6 +58,16 @@ export default class Keyboard {
 
       if (code.includes('Control') && this.isAlt) this.switchLang();
       if (code.includes('Alt') && this.isCtrl) this.switchLang();
+
+      if (!this.isCaps) {
+        this.print(keyObj, this.isShift ? keyObj.shiftKey : keyObj.key);
+      } else if (this.isCaps) {
+        if (this.isShift) {
+          this.print(keyObj, keyObj.sub.innerHTML ? keyObj.shiftKey : keyObj.key);
+        } else {
+          this.print(keyObj, !keyObj.sub.innerHTML ? keyObj.shiftKey : keyObj.key);
+        }
+      }
     } else {
       keyObj.wrapper.classList.remove('active');
       if (code.includes('Shift')) this.isShift = false;
@@ -89,4 +99,40 @@ export default class Keyboard {
       btn.letter.innerHTML = keyObj.key;
     });
   };
+
+  print(keyObj, key) {
+    let cursorPos = this.textarea.selectionStart;
+    const left = this.textarea.value.slice(0, cursorPos);
+    const right = this.textarea.value.slice(cursorPos);
+
+    const methodsOfFuncBtns = {
+      Tab: () => {
+        this.textarea.value = `${left}\t${right}`;
+        cursorPos += 1;
+      },
+      Enter: () => {
+        this.textarea.value = `${left}\n${right}`;
+        cursorPos += 1;
+      },
+      Space: () => {
+        this.textarea.value = `${left} ${right}`;
+        cursorPos += 1;
+      },
+      Backspace: () => {
+        this.textarea.value = `${left.slice(0, -1)}${right}`;
+        cursorPos -= 1;
+      },
+      Delete: () => {
+        this.textarea.value = `${left}${right.slice(1)}`;
+      },
+    };
+
+    if (methodsOfFuncBtns[keyObj.code]) methodsOfFuncBtns[keyObj.code]();
+    if (!keyObj.isFuncKey || keyObj.code.includes('Arrow')) {
+      cursorPos += 1;
+      this.textarea.value = `${left}${key}${right}`;
+    }
+
+    this.textarea.setSelectionRange(cursorPos, cursorPos);
+  }
 }
