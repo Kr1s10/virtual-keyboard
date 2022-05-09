@@ -37,13 +37,36 @@ export default class Keyboard {
 
     document.addEventListener('keydown', this.keyEventHandler);
     document.addEventListener('keyup', this.keyEventHandler);
-
+    this.wrapper.addEventListener('mousedown', this.mouseEventHandler);
+    this.wrapper.addEventListener('mouseup', this.mouseEventHandler);
     return this;
   }
 
+  mouseEventHandler = (e) => {
+    e.stopPropagation();
+    const wrapper = e.target.closest('.key');
+    if (!wrapper) return;
+    const { dataset: { code } } = wrapper;
+    if (!code.includes('Caps')) wrapper.addEventListener('mouseleave', this.resetBtnStyles);
+    this.eventHandler({ code, type: e.type });
+  };
+
+  resetBtnStyles = (e) => {
+    if (e.target.dataset.code.includes('Shift')) {
+      this.isShift = false;
+      this.setUpperCase();
+    }
+    e.target.classList.remove('active');
+    e.target.removeEventListener('mouseleave', this.resetBtnStyles);
+  };
+
   keyEventHandler = (e) => {
-    if (e.stopPropagation) e.stopPropagation();
+    e.stopPropagation();
     e.preventDefault();
+    this.eventHandler(e);
+  };
+
+  eventHandler = (e) => {
     const { code, type } = e;
     const keyObj = this.keyBtns.find((key) => key.code === code);
     if (!keyObj) return;
@@ -51,48 +74,51 @@ export default class Keyboard {
 
     if (type.includes('down')) {
       keyObj.wrapper.classList.add('active');
-
-      if (code.includes('Caps') && this.isCaps) {
-        this.isCaps = false;
-        this.setUpperCase(false);
-        keyObj.wrapper.classList.remove('active');
-      } else if (code.includes('Caps')) {
-        this.isCaps = true;
-        this.setUpperCase(true);
-      }
-
-      if (code.includes('Shift')) {
-        this.isShift = true;
-        this.setUpperCase(true);
-      }
-
-      if (code.includes('Control')) this.isCtrl = true;
-      if (code.includes('Alt')) this.isAlt = true;
-
-      if (code.includes('Control') && this.isAlt) this.switchLang();
-      if (code.includes('Alt') && this.isCtrl) this.switchLang();
-
-      if (!this.isCaps) {
-        this.print(keyObj, this.isShift ? keyObj.shiftKey : keyObj.key);
-      } else if (this.isCaps) {
-        if (this.isShift) {
-          this.print(keyObj, keyObj.sub.innerHTML ? keyObj.shiftKey : keyObj.key);
-        } else {
-          this.print(keyObj, !keyObj.sub.innerHTML ? keyObj.shiftKey : keyObj.key);
-        }
-      }
+      this.checkBtnsForEvent(keyObj, code, type);
+      this.checkForPrint(keyObj);
     } else {
       if (!code.includes('Caps')) keyObj.wrapper.classList.remove('active');
-
-      if (code.includes('Shift')) {
-        this.isShift = false;
-        this.setUpperCase(false);
-      }
-
-      if (code.includes('Alt')) this.isAlt = false;
-      if (code.includes('Control')) this.isCtrl = false;
+      this.changeFlags(code, false);
     }
   };
+
+  checkBtnsForEvent(keyObj, code, type) {
+    if (code.includes('Caps') && this.isCaps) {
+      this.isCaps = false;
+      this.setUpperCase(false);
+      keyObj.wrapper.classList.remove('active');
+    } else if (code.includes('Caps')) {
+      this.isCaps = true;
+      this.setUpperCase(true);
+    }
+
+    this.changeFlags(code, true);
+    if (code.includes('Control') && this.isAlt) this.switchLang();
+    if (code.includes('Alt') && this.isCtrl) this.switchLang();
+    if (code.includes('Meta') && type.includes('mouse')) this.switchLang();
+  }
+
+  changeFlags(code, flag) {
+    if (code.includes('Shift')) {
+      this.isShift = flag;
+      this.setUpperCase(flag);
+    }
+
+    if (code.includes('Control')) this.isCtrl = flag;
+    if (code.includes('Alt')) this.isAlt = flag;
+  }
+
+  checkForPrint(keyObj) {
+    if (!this.isCaps) {
+      this.print(keyObj, this.isShift ? keyObj.shiftKey : keyObj.key);
+    } else if (this.isCaps) {
+      if (this.isShift) {
+        this.print(keyObj, keyObj.sub.innerHTML ? keyObj.shiftKey : keyObj.key);
+      } else {
+        this.print(keyObj, !keyObj.sub.innerHTML ? keyObj.shiftKey : keyObj.key);
+      }
+    }
+  }
 
   switchLang = () => {
     const langArr = Object.keys(listOfLang);
@@ -116,6 +142,8 @@ export default class Keyboard {
 
       btn.letter.innerHTML = keyObj.key;
     });
+
+    if (this.isCaps) this.setUpperCase();
   };
 
   setUpperCase(flag) {
