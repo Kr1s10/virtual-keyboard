@@ -1,5 +1,6 @@
 import KeyBoard from './Keyboard.js';
 import Description from './Description.js';
+import { get } from './storage.js';
 import create from './creater.js';
 
 const rowsOrder = [
@@ -10,7 +11,7 @@ const rowsOrder = [
   ['ControlLeft', 'MetaLeft', 'AltLeft', 'Space', 'AltRight', 'ArrowLeft', 'ArrowDown', 'ArrowRight', 'ControlRight'],
 ];
 
-const lang = 'en';
+const lang = get('lang');
 const description = new Description();
 const keyboard = new KeyBoard(rowsOrder).init(lang).show();
 const main = create('main', 'main');

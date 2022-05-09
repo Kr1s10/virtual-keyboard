@@ -38,6 +38,13 @@
   line-height: 2em;
 }
 
+.hint .win {
+  width: 30px;
+  line-height: 1.7em;
+  background-color: #b577d6;
+  color: #fff;
+}
+
 .area {
   display: block;
   width: 100%;

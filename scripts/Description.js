@@ -7,6 +7,6 @@ export default class Description {
     this.hint = create('p', 'hint');
     this.title.innerHTML = 'Virtual Keyboard';
     this.description.innerHTML = 'This keyboard was created in Windows.';
-    this.hint.innerHTML = 'The keyboard shortcut for changing language - left <span>Ctrl</span> + <span>Alt</span>';
+    this.hint.innerHTML = 'The keyboard shortcut for changing language - left <span>Ctrl</span> + <span>Alt</span> or click on <span class="win">⊞</span>';
   }
 }

@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import create from './creater.js';
+import * as storage from './storage.js';
 import listOfLang from './layouts/langs.js';
 import Textarea from './Textarea.js';
 import Key from './Key.js';
@@ -128,6 +129,7 @@ export default class Keyboard {
       : listOfLang[langArr[langIndex -= langIndex]];
 
     this.wrapper.dataset.lang = langArr[langIndex];
+    storage.set('lang', langArr[langIndex]);
 
     this.keyBtns.forEach((btn) => {
       const keyObj = this.keyBase.find((key) => key.code === btn.code);
