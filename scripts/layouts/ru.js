@@ -266,7 +266,7 @@ export default [
   },
   {
     key: '↑',
-    shiftKey: null,
+    shiftKey: '↑',
     code: 'ArrowUp',
   },
   {
@@ -301,17 +301,17 @@ export default [
   },
   {
     key: '←',
-    shiftKey: null,
+    shiftKey: '←',
     code: 'ArrowLeft',
   },
   {
     key: '↓',
-    shiftKey: null,
+    shiftKey: '↓',
     code: 'ArrowDown',
   },
   {
     key: '→',
-    shiftKey: null,
+    shiftKey: '→',
     code: 'ArrowRight',
   },
   {

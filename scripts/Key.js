@@ -12,10 +12,8 @@ export default class Key {
     this.wrapper = create('div', 'key');
 
     if (shiftKey && key.toUpperCase() !== shiftKey) this.sub.innerHTML = this.shiftKey;
-    if (this.isFuncKey) {
-      if (!this.code.includes('Arrow')) this.wrapper.classList.add('func', `${this.code}`);
-      else this.wrapper.classList.add('func', 'arrow');
-    }
+    if (this.code.includes('Arrow')) this.wrapper.classList.add('arrow');
+    if (this.isFuncKey) this.wrapper.classList.add('func', `${this.code}`);
 
     this.wrapper.dataset.code = this.code;
     this.wrapper.append(this.sub, this.letter);
