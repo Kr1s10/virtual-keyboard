@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300;400;700&display=swap');
+$basic-color: #b577d6;
+
+*, h1 {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Comfortaa', cursive;;
+}
+
+.main {
+    max-width: 900px;
+    margin: 70px auto 0;
+}
+
+.title {
+    color: #4a0061;
+    text-align: center;
+    font-size: 35px;
+}
+
+.hint {
+    text-align: end;
+    margin: 50px 0 10px;
+    padding-right: 10px;
+    color: #6c008d;
+    font-size: 15px;
+    span {
+        display: inline-block;
+        font-weight: bold;
+        border: 2px solid $basic-color;
+        border-radius: 5px;
+        height: 30px;
+        width: 45px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 2em;
+    }
+    .win {
+        width: 30px;
+        line-height: 1.7em;
+        background-color: $basic-color;
+        color: #fff;
+    }
+}
+
+.area {
+    display: block;
+    width: 100%;
+    height: 200px;
+    padding: 15px 20px;
+    color: #6c008d;
+    font-size: 20px;
+    border: 2px solid #999;
+    border-radius: 5px;
+    outline: none;
+    -moz-appearance: none;
+    &:focus {
+        border-color: #6c008d;
+    }
+}
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #f8ecff;
+    border: 2px solid $basic-color;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 15px 0;
+}
+
+.keyboard-row {
+    display: flex;
+    gap: 7px;
+    height: 50px;
+}
+
+.key {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    min-width: 50px;
+    color: #6c008d;
+    font-weight: bold;
+    font-size: 20px;
+    border: 2px solid $basic-color;
+    border-radius: 5px;
+    padding: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: .2s;
+    &:hover,
+    &.active {
+        color: #fff;
+        background-color: #9265aa;
+        border-color: #9265aa;
+        .sub {
+            color: #fff;
+        }
+    }
+    &.active {
+        transform: scale(0.9);
+    }
+}
+
+.func,
+.arrow {
+    font-size: 18px;
+    flex-grow: 1;
+    background-color: #c292db;
+    border-color: #c292db;
+    color: #fff;
+}
+
+.arrow {
+    max-width: 50px;
+}
+
+.Space {
+    min-width: 375px;
+    background-color: #fff;
+    border-color: $basic-color;
+}
+
+.sub {
+    text-align: start;
+    font-size: 14px;
+    color: $basic-color;
+}
+
+.letter {
+    text-align: center;
+}
+
+.description {
+    text-align: center;
+    font-size: 15px;
+    color: $basic-color;
+}
+
