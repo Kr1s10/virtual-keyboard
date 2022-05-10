@@ -128,7 +128,8 @@
           transform: scale(0.9);
 }
 
-.func {
+.func,
+.arrow {
   font-size: 18px;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
